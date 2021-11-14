@@ -93,15 +93,20 @@ public class SuggestionControllerTest {
      * Test of create method, of class SuggestionController.
      */
     @Test
-    public void testCreate() {
+    public void testCreate() throws Exception{
         System.out.println("create");
-        Suggestion cm = null;
-        SuggestionController instance = new SuggestionController();
-        Suggestion expResult = null;
-        Suggestion result = instance.create(cm);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Suggestion suggestion = new Suggestion("Antonio", "Mejora", "Mejorar atencion");
+        suggestion.setId(new Long(1));
+        
+        String expected = "{\"id\":1,\"person\":\"Antonio\",\"information\":\"Mejorar atencion\",\"type\":\"Mejora\"}" ;
+        when(suggestionRepository.save(suggestion)).thenReturn(suggestion);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/suggestion", suggestion)
+                .accept(MediaType.APPLICATION_JSON).content(expected)
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        System.out.println(result.getResponse().getContentAsString());
+        assertEquals(HttpStatus.CREATED.value(), response.getStatus());
     }
 
     /**
