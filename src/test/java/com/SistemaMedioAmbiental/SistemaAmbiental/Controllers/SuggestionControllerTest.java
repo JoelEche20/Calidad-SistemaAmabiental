@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -128,14 +129,11 @@ public class SuggestionControllerTest {
     /**
      * Test of delete method, of class SuggestionController.
      */
-    /*@Test
-    public void testDelete() {
+    @Test
+    public void testDelete() throws Exception{
         System.out.println("delete");
-        Long id = null;
-        SuggestionController instance = new SuggestionController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/suggestion/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
     
 }
