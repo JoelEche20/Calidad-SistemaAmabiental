@@ -69,6 +69,8 @@ public class SubClasification {
         return id;
       }
     
+    public void setId(Long id) {this.id = id; }
+    
       // nombre de la sub clasificacion
       public void setName(String name) {
         this.name = name;

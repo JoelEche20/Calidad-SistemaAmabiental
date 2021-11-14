@@ -6,107 +6,121 @@
 package com.SistemaMedioAmbiental.SistemaAmbiental.Controllers;
 
 import com.SistemaMedioAmbiental.SistemaAmbiental.Models.LocationTree;
+import com.SistemaMedioAmbiental.SistemaAmbiental.Models.SubClasification;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
+import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.LocationTreeRepository;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import static org.junit.Assert.*;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 /**
  *
  * @author Antonio
  */
+
+@RunWith(SpringRunner.class)
+//@WebMvcTest(value = LocationTreeController.class, secure = false)
+
 public class LocationTreeControllerTest {
     
-    public LocationTreeControllerTest() {
+    //@Autowired
+    private  MockMvc mockMvc;
+    @InjectMocks
+    LocationTreeController locationTreeController;
+    
+    @Mock
+    LocationTreeRepository locationTreeRepository;
+    
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(locationTreeController).build();
+    }
+    
+    /*public LocationTreeControllerTest() {
+    }*/
+
+    /**
+     * Test of showLocationTree method, of class LocationTreeController.
+     */
+    @Test
+    public void testShowLocationTree_0args() throws Exception {
+     
+        System.out.println("showLocationTree");
+        List<LocationTree> locationTrees = Arrays.asList(new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol")));
+        Mockito.when(locationTreeRepository.findAll()).thenReturn(locationTrees);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/locationTree"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of showLocationTree method, of class LocationTreeController.
      */
     @Test
-    public void testShowLocationTree_0args() {
+    public void testShowLocationTree_Long() throws Exception{
         System.out.println("showLocationTree");
-        LocationTreeController instance = new LocationTreeController();
-        List<LocationTree> expResult = null;
-        List<LocationTree> result = instance.showLocationTree();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showLocationTree method, of class LocationTreeController.
-     */
-    @Test
-    public void testShowLocationTree_Long() {
-        System.out.println("showLocationTree");
-        Long id = null;
-        LocationTreeController instance = new LocationTreeController();
-        Optional<LocationTree> expResult = null;
-        Optional<LocationTree> result = instance.showLocationTree(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showLocationsSubClasification method, of class LocationTreeController.
-     */
-    @Test
-    public void testShowLocationsSubClasification() {
-        System.out.println("showLocationsSubClasification");
-        Long id = null;
-        LocationTreeController instance = new LocationTreeController();
-        List<LocationTree> expResult = null;
-        List<LocationTree> result = instance.showLocationsSubClasification(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        Mockito.when(locationTreeRepository.findById(new Long(1))).thenReturn(Optional.of(locationTree));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/locationTree/1")
+                    .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(locationTreeRepository).findById(new Long(1));
     }
 
     /**
      * Test of create method, of class LocationTreeController.
      */
     @Test
-    public void testCreate() {
+    public void testCreate() throws Exception {
         System.out.println("create");
-        LocationTree lc = null;
-        Long id = null;
-        LocationTreeController instance = new LocationTreeController();
-        LocationTree expResult = null;
-        LocationTree result = instance.create(lc, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String expected = "{\"id\":1,\"name\":\"Tiquipaya\",\"information\":\"Arboles\",\"imageLink\":\"arbol_tiqui\",\"subClasification\":{\"id\":1\"name\":\"Arbolito\",\"information\":\"Arboles Cocha\",\"imageLink\":\"imagen_arbol\"}}" ;
+        
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+                mockMvc.perform(MockMvcRequestBuilders.post("/api/locationTree")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     /**
      * Test of update method, of class LocationTreeController.
      */
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws Exception {
         System.out.println("update");
-        Long id = null;
-        LocationTree lc = null;
-        LocationTreeController instance = new LocationTreeController();
-        LocationTree expResult = null;
-        LocationTree result = instance.update(id, lc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        String expected = "{\"id\":1,\"name\":\"Tiquipaya\",\"information\":\"Arboles\",\"imageLink\":\"arbol_tiqui\",\"subClasification\":{\"id\":1\"name\":\"Arbolito\",\"information\":\"Arboles Cocha\",\"imageLink\":\"imagen_arbol\"}}" ;
+        locationTree.setId(new Long(1));
+        locationTree.setImageLink("imagen_arbol");
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/locationTree").contentType(MediaType.APPLICATION_JSON)
+                .content(expected)).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)));
+            
     }
 
     /**
      * Test of delete method, of class LocationTreeController.
      */
     @Test
-    public void testDelete() {
-        System.out.println("delete");
-        Long id = null;
-        LocationTreeController instance = new LocationTreeController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/locationTree/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
-    
 }
