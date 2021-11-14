@@ -66,6 +66,7 @@ public class Complaint {
         return id;
       }
     
+    public void setId(Long id) {this.id = id; }
       // Denunciante
       public void setWhistleblower(String whistleblower) {
         this.whistleblower = whistleblower;
