@@ -79,6 +79,10 @@ public class ReplacementOfTree {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     // Tipo de poda del arbol
     public void setTypeOfReplacement(String typeOfReplacement) {
         this.typeOfReplacement = typeOfReplacement;
