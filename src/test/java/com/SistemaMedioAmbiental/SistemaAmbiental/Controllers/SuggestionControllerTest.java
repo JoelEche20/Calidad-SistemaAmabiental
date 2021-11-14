@@ -112,18 +112,18 @@ public class SuggestionControllerTest {
     /**
      * Test of update method, of class SuggestionController.
      */
-    /*@Test
-    public void testUpdate() {
+    @Test
+    public void testUpdate() throws Exception {
         System.out.println("update");
-        Long id = null;
-        Suggestion cl = null;
-        SuggestionController instance = new SuggestionController();
-        Suggestion expResult = null;
-        Suggestion result = instance.update(id, cl);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+        Suggestion suggestion = new Suggestion("Antonio", "Mejora", "Mejorar atencion");
+        suggestion.setId(new Long(1));
+        
+        when(suggestionRepository.findById(new Long(1))).thenReturn(Optional.ofNullable(suggestion));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/suggestion/1").accept(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        String expected = "{\"id\":1,\"person\":\"Antonio\",\"information\":\"Mejorar atencion\",\"type\":\"Mejora\"}" ;
+        JSONAssert.assertEquals(expected,result.getResponse().getContentAsString(), true);
+    }
 
     /**
      * Test of delete method, of class SuggestionController.
