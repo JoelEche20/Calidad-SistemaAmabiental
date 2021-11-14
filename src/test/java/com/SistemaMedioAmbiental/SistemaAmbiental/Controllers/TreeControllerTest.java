@@ -5,68 +5,88 @@
  */
 package com.SistemaMedioAmbiental.SistemaAmbiental.Controllers;
 
+import com.SistemaMedioAmbiental.SistemaAmbiental.Models.LocationTree;
+import com.SistemaMedioAmbiental.SistemaAmbiental.Models.SubClasification;
 import com.SistemaMedioAmbiental.SistemaAmbiental.Models.Tree;
+
+import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
+
+import java.util.Optional;
+
+import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.TreeRepository;
+import org.hamcrest.Matchers;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import static org.junit.Assert.*;
 
 /**
  *
  * @author Antonio
  */
+
+@RunWith(SpringRunner.class)
 public class TreeControllerTest {
     
-    public TreeControllerTest() {
+    private MockMvc mockMvc;
+    @InjectMocks
+    TreeController treeController;
+    
+    @Mock
+    TreeRepository treeRepository;
+    
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(treeController).build();
     }
+    
+    /*public TreeControllerTest() {
+    }*/
 
     /**
      * Test of showTree method, of class TreeController.
      */
     @Test
-    public void testShowTree() {
+    public void testShowTree() throws Exception {
         System.out.println("showTree");
-        TreeController instance = new TreeController();
-        List<Tree> expResult = null;
-        List<Tree> result = instance.showTree();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        List<Tree> trees = Arrays.asList(new Tree("1Code", "Sauce", "Sauce_Cientifico", 10, 10, "Antonio", "Imagen_Sauce", "Sauce_especies", locationTree));
+        
+        Mockito.when(treeRepository.findAll()).thenReturn(trees);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tree"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of showTrees method, of class TreeController.
      */
     @Test
-    public void testShowTrees() {
+    public void testShowTrees() throws Exception {
         System.out.println("showTrees");
-        Long id = null;
-        TreeController instance = new TreeController();
-        Tree expResult = null;
-        Tree result = instance.showTrees(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of showTreesLocation method, of class TreeController.
-     */
-    @Test
-    public void testShowTreesLocation() {
-        System.out.println("showTreesLocation");
-        Long id = null;
-        TreeController instance = new TreeController();
-        List<Tree> expResult = null;
-        List<Tree> result = instance.showTreesLocation(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        Tree tree = new Tree("1Code", "Sauce", "Sauce_Cientifico", 10, 10, "Antonio", "Imagen_Sauce", "Sauce_especies", locationTree);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/tree/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(treeRepository).findById(new Long(1));
     }
 
     /**
      * Test of create method, of class TreeController.
      */
-    @Test
+    /*@Test
     public void testCreate() {
         System.out.println("create");
         Tree tree = null;
@@ -77,12 +97,12 @@ public class TreeControllerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of update method, of class TreeController.
      */
-    @Test
+    /*@Test
     public void testUpdate() {
         System.out.println("update");
         Long id = null;
@@ -93,19 +113,16 @@ public class TreeControllerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
     /**
      * Test of delete method, of class TreeController.
      */
     @Test
-    public void testDelete() {
+    public void testDelete() throws Exception {
         System.out.println("delete");
-        Long id = null;
-        TreeController instance = new TreeController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/tree/1").accept(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk());
     }
     
 }
