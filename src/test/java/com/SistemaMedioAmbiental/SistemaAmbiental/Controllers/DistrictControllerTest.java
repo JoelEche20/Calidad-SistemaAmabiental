@@ -48,7 +48,7 @@ public class DistrictControllerTest {
     /**
      * Test of showClasification method, of class DistrictController.
      */
-    /*@Test
+    @Test
     public void testShowClasification_0args() {
         System.out.println("showClasification");
         DistrictController instance = new DistrictController();
@@ -57,7 +57,7 @@ public class DistrictControllerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of showClasification method, of class DistrictController.
@@ -78,7 +78,7 @@ public class DistrictControllerTest {
     /**
      * Test of create method, of class DistrictController.
      */
-    /*@Test
+    @Test
     public void testCreate() {
         System.out.println("create");
         District ds = null;
@@ -88,12 +88,12 @@ public class DistrictControllerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of update method, of class DistrictController.
      */
-    /*@Test
+    @Test
     public void testUpdate() {
         System.out.println("update");
         Long id = null;
@@ -104,12 +104,12 @@ public class DistrictControllerTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of delete method, of class DistrictController.
      */
-    /*@Test
+    @Test
     public void testDelete() {
         System.out.println("delete");
         Long id = null;
@@ -117,6 +117,6 @@ public class DistrictControllerTest {
         instance.delete(id);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }*/
+    }
     
 }
