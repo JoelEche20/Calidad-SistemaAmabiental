@@ -53,10 +53,6 @@ public class ComplaintControllerTest {
      */
     @Test
     public void testShowComplaints() throws Exception {
-        /*Complaint complaint = new Complaint("Antonio","Reporte", "Arboles sin regar" , 1.0f, 1.0f);
-        complaint.setImageLink("imagen_arbolito");
-        complaint.setId(new Long(1));
-        System.out.println("showComplaints");*/
         
         List<Complaint> complaintList = new ArrayList<>();
         Complaint d1 = new Complaint("Antonio","Reporte", "Arboles sin regar" , 1.0f, 1.0f);
