@@ -52,6 +52,7 @@ public class Suggestion {
         return id;
       }
     
+    public void setId(Long id) {this.id = id; }
       // Usuario que hace la sugerencia
       public void setPerson(String person) {
         this.person = person;
