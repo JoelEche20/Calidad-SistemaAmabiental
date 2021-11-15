@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -63,15 +64,15 @@ public class TreatmentTreeControllerTest {
      * Test of showTretmentsTreeLocation method, of class TreatmentTreeController.
      */
     @Test
-    public void testShowTretmentsTreeLocation() {
-        System.out.println("showTretmentsTreeLocation");
-        Long id = null;
-        TreatmentTreeController instance = new TreatmentTreeController();
-        List<TreatmentTree> expResult = null;
-        List<TreatmentTree> result = instance.showTretmentsTreeLocation(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowTretmentsTreeLocation() throws Exception {
+        TreatmentTree treatmentTree = new TreatmentTree("pruning","sugest","treatment");
+        treatmentTree.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"))));
+        treatmentTree.setLocationTree(new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb")));
+        List<TreatmentTree> replacementOfTrees = Arrays.asList(treatmentTree);
+        Mockito.when(treatmentTreeRepository.findAll()).thenReturn(replacementOfTrees);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/1/treatmentTree")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
