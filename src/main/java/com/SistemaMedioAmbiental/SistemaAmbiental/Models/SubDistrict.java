@@ -75,8 +75,12 @@ public class SubDistrict {
     public Long getId() {
         return id;
       }
-    
-      // nombre de la sub clasificacion
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // nombre de la sub clasificacion
       public void setName(String name) {
         this.name = name;
       }
