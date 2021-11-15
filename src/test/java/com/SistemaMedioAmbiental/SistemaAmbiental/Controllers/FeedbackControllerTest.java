@@ -6,91 +6,85 @@
 package com.SistemaMedioAmbiental.SistemaAmbiental.Controllers;
 
 import com.SistemaMedioAmbiental.SistemaAmbiental.Models.Feedback;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.FeedbackRepository;
+import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-/**
- *
- * @author Antonio
- */
+@RunWith(SpringRunner.class)
 public class FeedbackControllerTest {
-    
-    public FeedbackControllerTest() {
+
+    private MockMvc mockMvc;
+    @InjectMocks
+    FeedbackController feedbackController;
+
+    @Mock
+    FeedbackRepository feedbackRepository;
+
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(feedbackController).build();
     }
 
-    /**
-     * Test of showFeedbacks method, of class FeedbackController.
-     */
     @Test
-    public void testShowFeedbacks() {
-        System.out.println("showFeedbacks");
-        FeedbackController instance = new FeedbackController();
-        List<Feedback> expResult = null;
-        List<Feedback> result = instance.showFeedbacks();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowFeedbacks() throws Exception {
+        List<Feedback> feedbacks = Arrays.asList(new Feedback("Mauricio","Carnivora","Flor","Fruct","defo","foli"));
+        Mockito.when(feedbackRepository.findAll()).thenReturn(feedbacks);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/feedback"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
     }
 
-    /**
-     * Test of showFeedback method, of class FeedbackController.
-     */
     @Test
-    public void testShowFeedback() {
-        System.out.println("showFeedback");
-        Long id = null;
-        FeedbackController instance = new FeedbackController();
-        Optional<Feedback> expResult = null;
-        Optional<Feedback> result = instance.showFeedback(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowFeedback() throws Exception {
+        Feedback feedback = new Feedback("Mauricio","Carnivora","Flor","Fruct","defo","foli");
+        Mockito.when(feedbackRepository.findById(new Long(1))).thenReturn(Optional.of(feedback));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/feedback/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(feedbackRepository).findById(new Long(1));
     }
 
-    /**
-     * Test of create method, of class FeedbackController.
-     */
     @Test
-    public void testCreate() {
-        System.out.println("create");
-        Feedback cm = null;
-        FeedbackController instance = new FeedbackController();
-        Feedback expResult = null;
-        Feedback result = instance.create(cm);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCreate() throws Exception {
+        String expected = "{\"id\":1,\"person\":\"Mauricio\",\"treeSpecies\":\"Carnivora1\",\"flowering\":\"Flor1\",\"fructification\":\"Fruct1\",\"defoliation\":\"defo1\",\"foliation\":\"foli1\",\"imageLink\":\"ImageLink1\"}";
+        Feedback feedback = new Feedback("Mauricio","Carnivora","Flor","Fruct","defo","foli");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/feedback")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
-    /**
-     * Test of update method, of class FeedbackController.
-     */
     @Test
-    public void testUpdate() {
-        System.out.println("update");
-        Long id = null;
-        Feedback cl = null;
-        FeedbackController instance = new FeedbackController();
-        Feedback expResult = null;
-        Feedback result = instance.update(id, cl);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testUpdate() throws Exception {
+        Feedback feedback = new Feedback("Mauricio","Carnivora","Flor","Fruct","defo","foli");
+        String expected = "{\"id\":1,\"person\":\"Mauricio\",\"treeSpecies\":\"Carnivora1\",\"flowering\":\"Flor1\",\"fructification\":\"Fruct1\",\"defoliation\":\"defo1\",\"foliation\":\"foli1\",\"imageLink\":\"ImageLink1\"}";
+        feedback.setId(new Long(1));
+        feedback.setImageLink("ImageLink");
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/feedback/1").contentType(MediaType.APPLICATION_JSON)
+                .content(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    /**
-     * Test of delete method, of class FeedbackController.
-     */
     @Test
-    public void testDelete() {
-        System.out.println("delete");
-        Long id = null;
-        FeedbackController instance = new FeedbackController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/feedback/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
-    
+
+
 }

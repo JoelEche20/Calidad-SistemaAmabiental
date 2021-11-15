@@ -71,6 +71,8 @@ public class Feedback {
         return id;
       }
 
+      public void setId(long id) { this.id = id; }
+
       // Usuario que hace la retralimentacion
       public void setPerson(String person) {
         this.person = person;
