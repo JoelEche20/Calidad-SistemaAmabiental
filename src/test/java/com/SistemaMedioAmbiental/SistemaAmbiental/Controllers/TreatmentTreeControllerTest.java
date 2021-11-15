@@ -11,13 +11,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.LocationTreeRepository;
 import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.TreatmentTreeRepository;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,11 +39,18 @@ import static org.junit.Assert.*;
 public class TreatmentTreeControllerTest {
 
     private MockMvc mockMvc;
+
     @InjectMocks
     TreatmentTreeController treatmentTreeController;
 
+    @InjectMocks
+    LocationTreeController locationTreeController;
+
     @Mock
     TreatmentTreeRepository treatmentTreeRepository;
+
+    @Mock
+    LocationTreeRepository locationTreeRepository;
 
     @Before
     public void setUp() {
@@ -94,34 +105,40 @@ public class TreatmentTreeControllerTest {
      * Test of create method, of class TreatmentTreeController.
      */
     @Test
-    public void testCreate() {
-        System.out.println("create");
-        TreatmentTree cm = null;
-        Long id = null;
-        TreatmentTreeController instance = new TreatmentTreeController();
-        TreatmentTree expResult = null;
-        TreatmentTree result = instance.create(cm, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testCreate() throws Exception {
+
+        TreatmentTree treatmentTree = new TreatmentTree("pruning","sugest","treatment");
+        treatmentTree.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"))));
+        treatmentTree.setLocationTree(new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb")));
+
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        locationTree.setId(new Long(1));
+        String expected = "{ \"id\": 1, \"realizedTreatment\": \"test\", \"typeOfPruning\": \"test\" }";
+        Mockito.when(locationTreeRepository.save(locationTree)).thenReturn(locationTree);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/1/treatmentTree")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        System.out.println(MockMvcResultMatchers.content());
     }
 
     /**
      * Test of update method, of class TreatmentTreeController.
      */
     @Test
-    public void testUpdate() {
-        System.out.println("update");
-        Long id = null;
-        TreatmentTree cl = null;
-        TreatmentTreeController instance = new TreatmentTreeController();
-        TreatmentTree expResult = null;
-        TreatmentTree result = instance.update(id, cl);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+    public void testUpdate() throws Exception {
+        TreatmentTree treatmentTree = new TreatmentTree("pruning","sugest","treatment");
+        treatmentTree.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"))));
+        treatmentTree.setLocationTree(new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb")));
+        LocationTree locationTree = new LocationTree("Tiquipaya", "Arboles", "arbol_tiqui", new SubClasification("Arbolito", "Arboles Cocha", "imagen_arbol"));
+        Mockito.when(treatmentTreeRepository.save(treatmentTree)).thenReturn(treatmentTree);
 
+        String expected = "{\"realizedTreatment\": \"test\", \"typeOfPruning\": \"test\" }";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/treatmentTree/1").contentType(MediaType.APPLICATION_JSON)
+                        .content(expected)).andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)));
+    }
     /**
      * Test of delete method, of class TreatmentTreeController.
      */
