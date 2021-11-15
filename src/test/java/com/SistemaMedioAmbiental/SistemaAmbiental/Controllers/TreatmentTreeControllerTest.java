@@ -126,13 +126,9 @@ public class TreatmentTreeControllerTest {
      * Test of delete method, of class TreatmentTreeController.
      */
     @Test
-    public void testDelete() {
-        System.out.println("delete");
-        Long id = null;
-        TreatmentTreeController instance = new TreatmentTreeController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/treatmentTree/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
     
 }
