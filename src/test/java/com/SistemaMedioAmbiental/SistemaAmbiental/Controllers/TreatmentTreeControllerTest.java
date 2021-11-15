@@ -79,15 +79,15 @@ public class TreatmentTreeControllerTest {
      * Test of showTreatmentTree method, of class TreatmentTreeController.
      */
     @Test
-    public void testShowTreatmentTree() {
-        System.out.println("showTreatmentTree");
-        Long id = null;
-        TreatmentTreeController instance = new TreatmentTreeController();
-        Optional<TreatmentTree> expResult = null;
-        Optional<TreatmentTree> result = instance.showTreatmentTree(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowTreatmentTree() throws Exception {
+        TreatmentTree treatmentTree = new TreatmentTree("pruning","sugest","treatment");
+        treatmentTree.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"))));
+        treatmentTree.setLocationTree(new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb")));
+        Mockito.when(treatmentTreeRepository.findById(new Long(1))).thenReturn(Optional.of(treatmentTree));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/treatmentTree/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(treatmentTreeRepository).findById(new Long(1));
     }
 
     /**
