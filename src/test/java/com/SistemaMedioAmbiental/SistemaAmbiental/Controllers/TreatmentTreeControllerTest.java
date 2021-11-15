@@ -5,33 +5,58 @@
  */
 package com.SistemaMedioAmbiental.SistemaAmbiental.Controllers;
 
-import com.SistemaMedioAmbiental.SistemaAmbiental.Models.TreatmentTree;
+import com.SistemaMedioAmbiental.SistemaAmbiental.Models.*;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.TreatmentTreeRepository;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 import static org.junit.Assert.*;
 
 /**
  *
- * @author Antonio
+ * @author Mauricio
  */
+@RunWith(SpringRunner.class)
 public class TreatmentTreeControllerTest {
-    
-    public TreatmentTreeControllerTest() {
+
+    private MockMvc mockMvc;
+    @InjectMocks
+    TreatmentTreeController treatmentTreeController;
+
+    @Mock
+    TreatmentTreeRepository treatmentTreeRepository;
+
+    @Before
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(treatmentTreeController).build();
     }
 
     /**
      * Test of showTretmentsTree method, of class TreatmentTreeController.
      */
     @Test
-    public void testShowTretmentsTree() {
-        System.out.println("showTretmentsTree");
-        TreatmentTreeController instance = new TreatmentTreeController();
-        List<TreatmentTree> expResult = null;
-        List<TreatmentTree> result = instance.showTretmentsTree();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowTretmentsTree() throws Exception {
+        TreatmentTree treatmentTree = new TreatmentTree("pruning","sugest","treatment");
+        treatmentTree.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"))));
+        treatmentTree.setLocationTree(new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb")));
+        List<TreatmentTree> treatmentTrees = Arrays.asList(treatmentTree);
+        Mockito.when(treatmentTreeRepository.findAll()).thenReturn(treatmentTrees);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/treatmentTree"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
