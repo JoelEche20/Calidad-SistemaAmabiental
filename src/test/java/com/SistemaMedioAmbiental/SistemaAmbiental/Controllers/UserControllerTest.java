@@ -12,6 +12,7 @@ import com.SistemaMedioAmbiental.SistemaAmbiental.Models.User;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.SistemaMedioAmbiental.SistemaAmbiental.Repositories.UserRepository;
 import org.junit.Before;
@@ -22,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -125,15 +127,12 @@ public class UserControllerTest {
      * Test of showUser method, of class UserController.
      */
     @Test
-    public void testShowUser() {
-        System.out.println("showUser");
-        Long id = null;
-        UserController instance = new UserController();
-        User expResult = null;
-        User result = instance.showUser(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testShowUser() throws Exception {
+        User user = new User("Mauricio","maugv","maugv1234","maugv1234","maugv_77@hotmail.com","65347729",new Long(9353864),"calle los pinos","link");
+        Mockito.when(userRepository.findById(new Long(1))).thenReturn(Optional.of(user));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/user/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        Mockito.verify(userRepository).findById(new Long(1));
     }
-    
 }
