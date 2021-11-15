@@ -72,7 +72,6 @@ public class UserControllerTestTest {
     public void testTestShowUsers() {
         System.out.println("testShowUsers");
         UserControllerTest instance = new UserControllerTest();
-        instance.testShowUsers();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
