@@ -55,6 +55,8 @@ public class District {
     public Long getId() {
         return id;
       }
+
+      public void setId(Long id) {this.id = id; }
     
       // Nombre del distrito
       public void setName(String name) {
