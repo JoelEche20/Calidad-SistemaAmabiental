@@ -24,7 +24,6 @@ public class UserControllerTestTest {
     public void testTestAuthenticateUser() {
         System.out.println("testAuthenticateUser");
         UserControllerTest instance = new UserControllerTest();
-        instance.testAuthenticateUser();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -36,7 +35,6 @@ public class UserControllerTestTest {
     public void testTestRegisterUser() {
         System.out.println("testRegisterUser");
         UserControllerTest instance = new UserControllerTest();
-        instance.testRegisterUser();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -48,7 +46,6 @@ public class UserControllerTestTest {
     public void testTestAcceptRequest() {
         System.out.println("testAcceptRequest");
         UserControllerTest instance = new UserControllerTest();
-        instance.testAcceptRequest();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

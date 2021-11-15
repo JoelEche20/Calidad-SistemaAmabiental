@@ -57,58 +57,57 @@ public class UserControllerTest {
      * Test of authenticateUser method, of class UserController.
      */
     @Test
-    public void testAuthenticateUser() {
-        System.out.println("authenticateUser");
-        LoginForm loginRequest = null;
-        UserController instance = new UserController();
-        ResponseEntity expResult = null;
-        ResponseEntity result = instance.authenticateUser(loginRequest);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAuthenticateUser() throws Exception {
+        User user = new User("Mauricio","maugv3","123456","123456","maugv_77@hotmail.com","65347729",new Long(9353864),"calle los pinos","link");
+        user.setId(new Long(1));
+        String expected = "{ \"password\": \"maugv3\", \"username\": \"123456\" }";
+        Mockito.when(userRepository.findById(new Long(1))).thenReturn(Optional.of(user));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signin")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of registerUser method, of class UserController.
      */
     @Test
-    public void testRegisterUser() {
-        System.out.println("registerUser");
-        SignUpForm signUpRequest = null;
-        UserController instance = new UserController();
-        ResponseEntity expResult = null;
-        ResponseEntity result = instance.registerUser(signUpRequest);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testRegisterUser() throws Exception {
+        User user = new User("Mauricio","maugv3","123456","123456","maugv_77@hotmail.com","65347729",new Long(9353864),"calle los pinos","link");
+        user.setId(new Long(1));
+        String expected = "{ \"address\": \"casa\", \"ci\": 9353864, \"email\": \"maugv_77@hotmail.com\", \"imageLink\": \"link\", \"name\": \"Mauricio Guevara\", \"password\": \"123456\", \"passwordConfirm\": \"123456\", \"phone\": \"65347729\", \"role\": [ \"ROLE_ADMIN\" ], \"status\": true, \"username\": \"maugv3\"}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of acceptRequest method, of class UserController.
      */
     @Test
-    public void testAcceptRequest() {
-        System.out.println("acceptRequest");
-        Long id = null;
-        UserController instance = new UserController();
-        User expResult = null;
-        User result = instance.acceptRequest(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testAcceptRequest() throws Exception {
+        User user = new User("Mauricio","maugv3","123456","123456","maugv_77@hotmail.com","65347729",new Long(9353864),"calle los pinos","link");
+        user.setId(new Long(1));
+        String expected = "{ \"address\": \"casa\", \"ci\": 9353864, \"email\": \"maugv_77@hotmail.com\", \"imageLink\": \"link\", \"name\": \"Mauricio Guevara\", \"password\": \"123456\", \"passwordConfirm\": \"123456\", \"phone\": \"65347729\", \"role\": [ \"ROLE_ADMIN\" ], \"status\": true, \"username\": \"maugv3\"}";
+        //Mockito.when(userRepository.findById(new Long(1)).orElseGet(null));
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/auth/acceptRequest/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of denyRequest method, of class UserController.
      */
     @Test
-    public void testDenyRequest() {
-        System.out.println("denyRequest");
-        Long id = null;
-        UserController instance = new UserController();
-        instance.denyRequest(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDenyRequest() throws Exception {
+        User user = new User("Mauricio","maugv3","123456","123456","maugv_77@hotmail.com","65347729",new Long(9353864),"calle los pinos","link");
+        user.setId(new Long(1));
+        String expected = "{ \"address\": \"casa\", \"ci\": 9353864, \"email\": \"maugv_77@hotmail.com\", \"imageLink\": \"link\", \"name\": \"Mauricio Guevara\", \"password\": \"123456\", \"passwordConfirm\": \"123456\", \"phone\": \"65347729\", \"role\": [ \"ROLE_ADMIN\" ], \"status\": true, \"username\": \"maugv3\"}";
+        //Mockito.when(userRepository.findById(new Long(1)).orElseGet(null));
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/auth/denied/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
