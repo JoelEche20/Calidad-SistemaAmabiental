@@ -84,51 +84,34 @@ public class SubClasificationControllerTest {
     }
 
     /**
-     * Test of showSubClassesClasification method, of class SubClasificationController.
-     */
-    /*@Test
-    public void testShowSubClassesClasification() {
-        System.out.println("showSubClassesClasification");
-        Long id = null;
-        SubClasificationController instance = new SubClasificationController();
-        List<SubClasification> expResult = null;
-        List<SubClasification> result = instance.showSubClassesClasification(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
-
-    /**
      * Test of create method, of class SubClasificationController.
      */
-    /*@Test
-    public void testCreate() {
+    @Test
+    public void testCreate() throws Exception {
         System.out.println("create");
-        SubClasification sb = null;
-        Long id = null;
-        SubClasificationController instance = new SubClasificationController();
-        SubClasification expResult = null;
-        SubClasification result = instance.create(sb, id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+        String expected = "{\"id\":1,\"name\":\"SubClasi\",\"information\":\"Clasi_Arbol\",\"imageLink\":\"clasi_image\",\"clasification\":{}}";
+        SubClasification subClasification = new SubClasification("SubClasi", "Clasi_Arbol", "clasi_image");
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/subClasification")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(expected))
+                .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
 
+    
+    
     /**
      * Test of update method, of class SubClasificationController.
      */
-    /*@Test
-    public void testUpdate() {
+    @Test
+    public void testUpdate() throws Exception  {
         System.out.println("update");
-        Long id = null;
-        SubClasification sb = null;
-        SubClasificationController instance = new SubClasificationController();
-        SubClasification expResult = null;
-        SubClasification result = instance.update(id, sb);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+        SubClasification subClasification = new SubClasification("SubClasi", "Clasi_Arbol", "clasi_image");
+        String expected = "{\"id\":1,\"name\":\"SubClasi\",\"information\":\"Clasi_Arbol\",\"imageLink\":\"clasi_image\",\"clasification\":{}}";
+        subClasification.setId(new Long(1));
+        subClasification.setImageLink("ImageLink");
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/subClasification/1").contentType(MediaType.APPLICATION_JSON)
+                .content(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
     /**
      * Test of delete method, of class SubClasificationController.
