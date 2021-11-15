@@ -43,10 +43,8 @@ public class ReplacementOfTreeControllerTest {
 
     @InjectMocks
     ReplacementOfTreeController replacementOfTreeController;
-    //LocationTreeController locationTreeController;
     @Mock
     ReplacementOfTreeRepository replacementOfTreeRepository;
-    //LocationTreeRepository locationTreeRepository;
 
     @Before
     public void setUp() {
@@ -100,18 +98,17 @@ public class ReplacementOfTreeControllerTest {
     public void testCreate() throws Exception {
         ReplacementOfTree rep = new ReplacementOfTree("type","elim","date","reason");
         LocationTree locationTree = new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"));
-        locationTree.setId(new Long(1));
         rep.setDateOfReplacement("5/5/2021");
         rep.setReasonForTheReplacement("reason");
         rep.setId(new Long(1));
         rep.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",locationTree));
         rep.setLocationTree(locationTree);
 
-        String expected = "{\"id\":1,\"person\":\"Mauricio\",\"treeSpecies\":\"Carnivora1\",\"flowering\":\"Flor1\",\"fructification\":\"Fruct1\",\"defoliation\":\"defo1\",\"foliation\":\"foli1\",\"imageLink\":\"ImageLink1\"}";
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/" + locationTree.getId().toString() +"/replacementOfTree")
+        String expected = "{\"dateOfReplacement\": \"string\",\"eliminationOfCompetition\": \"string\",\"id\": 0,  \"locationTree\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\",\"subClasification\": {\"clasification\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\",\"subDistrict\": {\"cod\": \"string\",\"district\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"},\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"}},\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"}},\"reasonForTheReplacement\": \"string\",\"tree\": {\"codeTree\": \"string\",\"commonName\": \"string\",\"cupSize\": 0,\"id\": 0,\"imageLink\": \"string\",\"locationTree\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\",\"subClasification\": {\"clasification\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\",\"subDistrict\": {\"cod\": \"string\",\"district\": {\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"},\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"}},\"id\": 0,\"imageLink\": \"string\",\"information\": \"string\",\"name\": \"string\"}},\"responsable\": \"string\",\"scientificName\": \"string\",\"species\": \"string\",\"treeHeight\": 0},\"typeOfReplacement\": \"string\"}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/1/replacementOfTree")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(expected))
-                .andExpect(MockMvcResultMatchers.status().isCreated());
+                .andExpect(MockMvcResultMatchers.status().isOk());
         System.out.println(MockMvcResultMatchers.content());
 
     }
@@ -120,29 +117,27 @@ public class ReplacementOfTreeControllerTest {
      * Test of update method, of class ReplacementOfTreeController.
      */
     @Test
-    public void testUpdate() {
-        System.out.println("update");
-        Long id = null;
-        ReplacementOfTree cl = null;
-        ReplacementOfTreeController instance = new ReplacementOfTreeController();
-        ReplacementOfTree expResult = null;
-        ReplacementOfTree result = instance.update(id, cl);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testUpdate() throws Exception {
+        ReplacementOfTree rep = new ReplacementOfTree("type","elim","date","reason");
+        LocationTree locationTree = new LocationTree("ee","ee","ee",new SubClasification("bb","bb","bb"));
+        rep.setDateOfReplacement("5/5/2021");
+        rep.setReasonForTheReplacement("reason");
+        rep.setId(new Long(1));
+        rep.setTree(new Tree("cc","cc","cc",5,5,"cc","cc","cc",locationTree));
+        rep.setLocationTree(locationTree);
+
+        String expected = "{\"id\":1,\"person\":\"Mauricio\",\"treeSpecies\":\"Carnivora1\",\"flowering\":\"Flor1\",\"fructification\":\"Fruct1\",\"defoliation\":\"defo1\",\"foliation\":\"foli1\",\"imageLink\":\"ImageLink1\"}";
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/feedback/1").contentType(MediaType.APPLICATION_JSON)
+                .content(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     /**
      * Test of delete method, of class ReplacementOfTreeController.
      */
     @Test
-    public void testDelete() {
-        System.out.println("delete");
-        Long id = null;
-        ReplacementOfTreeController instance = new ReplacementOfTreeController();
-        instance.delete(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testDelete() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/replacementOfTree/1").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
     
 }
